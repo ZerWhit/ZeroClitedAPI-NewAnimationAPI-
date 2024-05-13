@@ -3,7 +3,6 @@ package zerwhit.Example.client.model.render;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import zerwhit.Example.client.model.ModelZombieTest;
 

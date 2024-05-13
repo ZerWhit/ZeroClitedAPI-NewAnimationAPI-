@@ -4,9 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import zerwhit.Example.ZeroClitedExample;
 import zerwhit.ZeroClitedAPI.Animate;
 import zerwhit.ZeroClitedAPI.IZeroLib;
 

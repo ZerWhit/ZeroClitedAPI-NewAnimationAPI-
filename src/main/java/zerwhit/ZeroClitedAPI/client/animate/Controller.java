@@ -4,6 +4,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
+import zerwhit.ZeroClitedAPI.Animate;
 import zerwhit.ZeroClitedAPI.IZeroLib;
 import zerwhit.ZeroClitedAPI.client.animate.tween.Transform;
 import zerwhit.ZeroClitedAPI.client.animate.tween.TweenUtils;
@@ -55,6 +56,9 @@ public class Controller {
             keyframe.rotateFrameTemp.put(modelPart, keyframe.rotate);
 
             if (entity.catchPacketTick() >= keyframe.startTick && entity.catchPacketTick() <= keyframe.startTick + keyframe.length) {
+                //Head Angle Fix
+                if (entity.catchPacketTick() == keyframe.startTick && (modelPart.boxName != null && modelPart.boxName.equals("Head")))
+                    rotateFrameTemp.put(modelPart, Vec3.createVectorHelper(modelPart.rotateAngleX, modelPart.rotateAngleY, modelPart.rotateAngleZ));
                 keyframe.endPhase = false;
                 moveFramePrev.remove(modelPart);
                 rotateFramePrev.remove(modelPart);
@@ -70,7 +74,7 @@ public class Controller {
                 Vec3 rotatePrev = rotateFramePrev.get(modelPart);
                 Vec3 move = keyframe.moveFrameTemp.get(modelPart);
                 Vec3 rotate = keyframe.rotateFrameTemp.get(modelPart);
-                double tweenRatio = MathHelper.clamp_double((entity.catchPacketTick() + 1 - keyframe.startTick) / keyframe.length, 0.0D, 1.0D);
+                double tweenRatio = MathHelper.clamp_double((entity.catchPacketTick() + Animate.proxy.getPartialTick() - keyframe.startTick) / keyframe.length, 0.0D, 1.0D);
                 double ratio = Transform.getTweenCoordHelper(keyframe.tweenType, tweenRatio);
                 position(
                         modelPart,
