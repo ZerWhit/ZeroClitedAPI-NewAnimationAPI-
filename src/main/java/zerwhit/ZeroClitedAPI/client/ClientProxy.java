@@ -1,10 +1,10 @@
 package zerwhit.ZeroClitedAPI.client;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Timer;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import zerwhit.ZeroClitedAPI.CommonProxy;
 
 public class ClientProxy extends CommonProxy {

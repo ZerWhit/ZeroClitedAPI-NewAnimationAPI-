@@ -1,8 +1,8 @@
 package zerwhit.Example.client;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import zerwhit.Example.CommonProxy;
 import zerwhit.Example.client.model.render.RenderZombieTest;
 import zerwhit.Example.entity.EntityZombieTest;
