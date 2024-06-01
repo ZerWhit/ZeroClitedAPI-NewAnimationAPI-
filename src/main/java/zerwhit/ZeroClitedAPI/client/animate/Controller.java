@@ -2,8 +2,8 @@ package zerwhit.ZeroClitedAPI.client.animate;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import zerwhit.ZeroClitedAPI.Animate;
 import zerwhit.ZeroClitedAPI.IZeroLib;
 import zerwhit.ZeroClitedAPI.client.animate.tween.Transform;
@@ -17,12 +17,12 @@ import java.util.Map;
 public class Controller {
     private IZeroLib entity;
     private ModelBase modelbase;
-    public Map<ModelRenderer, Vec3d> moveFramePrev = new HashMap<ModelRenderer, Vec3d>();
-    public Map<ModelRenderer, Vec3d> rotateFramePrev = new HashMap<ModelRenderer, Vec3d>();
-    public Map<ModelRenderer, Vec3d> moveFrameTemp = new HashMap<ModelRenderer, Vec3d>();
-    public Map<ModelRenderer, Vec3d> rotateFrameTemp = new HashMap<ModelRenderer, Vec3d>();
+    public Map<ModelRenderer, Vec3> moveFramePrev = new HashMap<ModelRenderer, Vec3>();
+    public Map<ModelRenderer, Vec3> rotateFramePrev = new HashMap<ModelRenderer, Vec3>();
+    public Map<ModelRenderer, Vec3> moveFrameTemp = new HashMap<ModelRenderer, Vec3>();
+    public Map<ModelRenderer, Vec3> rotateFrameTemp = new HashMap<ModelRenderer, Vec3>();
     public List<ModelRenderer> partList = new ArrayList<ModelRenderer>();
-    private final Vec3d init = new Vec3d(0.0D, 0.0D, 0.0D);
+    private final Vec3 init = Vec3.createVectorHelper(0.0D, 0.0D, 0.0D);
     public boolean setup;
     public Controller(ModelBase model){
         modelbase = model;
@@ -32,14 +32,14 @@ public class Controller {
         for (Object renderer : modelbase.boxList) {
             ModelRenderer part = (ModelRenderer) renderer;
             if (!moveFrameTemp.containsKey(part)){
-                moveFrameTemp.put(part, new Vec3d(part.rotationPointX, part.rotationPointY, part.rotationPointZ));
-                rotateFrameTemp.put(part, new Vec3d(part.rotateAngleX, part.rotateAngleY, part.rotateAngleZ));
+                moveFrameTemp.put(part, Vec3.createVectorHelper(part.rotationPointX, part.rotationPointY, part.rotationPointZ));
+                rotateFrameTemp.put(part, Vec3.createVectorHelper(part.rotateAngleX, part.rotateAngleY, part.rotateAngleZ));
             }
             else {
                 if (partList.contains(part)) {
                     position(
                             part,
-                            new Vec3d(0, 0, 0)
+                            Vec3.createVectorHelper(0, 0, 0)
                     );
                 }
             }
@@ -58,7 +58,7 @@ public class Controller {
             if (entity.catchPacketTick() >= keyframe.startTick && entity.catchPacketTick() <= keyframe.startTick + keyframe.length) {
                 //Head Angle Fix
                 if (entity.catchPacketTick() == keyframe.startTick && (modelPart.boxName != null && modelPart.boxName.equals("Head")))
-                    rotateFrameTemp.put(modelPart, new Vec3d(modelPart.rotateAngleX, modelPart.rotateAngleY, modelPart.rotateAngleZ));
+                    rotateFrameTemp.put(modelPart, Vec3.createVectorHelper(modelPart.rotateAngleX, modelPart.rotateAngleY, modelPart.rotateAngleZ));
                 keyframe.endPhase = false;
                 moveFramePrev.remove(modelPart);
                 rotateFramePrev.remove(modelPart);
@@ -70,26 +70,26 @@ public class Controller {
                     moveFramePrev.put(modelPart, init);
                     rotateFramePrev.put(modelPart, init);
                 }
-                Vec3d movePrev = moveFramePrev.get(modelPart);
-                Vec3d rotatePrev = rotateFramePrev.get(modelPart);
-                Vec3d move = keyframe.moveFrameTemp.get(modelPart);
-                Vec3d rotate = keyframe.rotateFrameTemp.get(modelPart);
-                double tweenRatio = MathHelper.clamp((entity.catchPacketTick() + Animate.proxy.getPartialTick() - keyframe.startTick) / keyframe.length, 0.0D, 1.0D);
+                Vec3 movePrev = moveFramePrev.get(modelPart);
+                Vec3 rotatePrev = rotateFramePrev.get(modelPart);
+                Vec3 move = keyframe.moveFrameTemp.get(modelPart);
+                Vec3 rotate = keyframe.rotateFrameTemp.get(modelPart);
+                double tweenRatio = MathHelper.clamp_double((entity.catchPacketTick() + Animate.proxy.getPartialTick() - keyframe.startTick) / keyframe.length, 0.0D, 1.0D);
                 double ratio = Transform.getTweenCoordHelper(keyframe.tweenType, tweenRatio);
                 position(
                         modelPart,
-                        new Vec3d(
-                                TweenUtils.lerp(movePrev.x, move.x, ratio),
-                                TweenUtils.lerp(movePrev.y, move.y, ratio),
-                                TweenUtils.lerp(movePrev.z, move.z, ratio)
+                        Vec3.createVectorHelper(
+                                TweenUtils.lerp(movePrev.xCoord, move.xCoord, ratio),
+                                TweenUtils.lerp(movePrev.yCoord, move.yCoord, ratio),
+                                TweenUtils.lerp(movePrev.zCoord, move.zCoord, ratio)
                         )
                 );
                 rotate(
                         modelPart,
-                        new Vec3d(
-                                TweenUtils.lerp(rotatePrev.x, rotate.x, ratio),
-                                TweenUtils.lerp(rotatePrev.y, rotate.y, ratio),
-                                TweenUtils.lerp(rotatePrev.z, rotate.z, ratio)
+                        Vec3.createVectorHelper(
+                                TweenUtils.lerp(rotatePrev.xCoord, rotate.xCoord, ratio),
+                                TweenUtils.lerp(rotatePrev.yCoord, rotate.yCoord, ratio),
+                                TweenUtils.lerp(rotatePrev.zCoord, rotate.zCoord, ratio)
                         )
                 );
             }
@@ -98,14 +98,14 @@ public class Controller {
             }
         }
     }
-    private void position(ModelRenderer part, Vec3d vec3){
-        part.rotationPointX = (float) (vec3.x + moveFrameTemp.get(part).x);
-        part.rotationPointY = (float) (vec3.y + moveFrameTemp.get(part).y);
-        part.rotationPointZ = (float) (vec3.z + moveFrameTemp.get(part).z);
+    private void position(ModelRenderer part, Vec3 vec3){
+        part.rotationPointX = (float) (vec3.xCoord + moveFrameTemp.get(part).xCoord);
+        part.rotationPointY = (float) (vec3.yCoord + moveFrameTemp.get(part).yCoord);
+        part.rotationPointZ = (float) (vec3.zCoord + moveFrameTemp.get(part).zCoord);
     }
-    private void rotate(ModelRenderer part, Vec3d vec3){
-        part.rotateAngleX = (float) (vec3.x + rotateFrameTemp.get(part).x);
-        part.rotateAngleY = (float) (vec3.y + rotateFrameTemp.get(part).y);
-        part.rotateAngleZ = (float) (vec3.z + rotateFrameTemp.get(part).z);
+    private void rotate(ModelRenderer part, Vec3 vec3){
+        part.rotateAngleX = (float) (vec3.xCoord + rotateFrameTemp.get(part).xCoord);
+        part.rotateAngleY = (float) (vec3.yCoord + rotateFrameTemp.get(part).yCoord);
+        part.rotateAngleZ = (float) (vec3.zCoord + rotateFrameTemp.get(part).zCoord);
     }
 }

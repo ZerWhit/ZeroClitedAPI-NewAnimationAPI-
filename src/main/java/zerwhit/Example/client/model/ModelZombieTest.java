@@ -2,7 +2,7 @@ package zerwhit.Example.client.model;
 
 import net.minecraft.client.model.ModelZombie;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
 import zerwhit.ZeroClitedAPI.IZeroLib;
 import zerwhit.ZeroClitedAPI.client.animate.Controller;
@@ -17,9 +17,14 @@ public class ModelZombieTest extends ModelZombie {
         this(0.0F, false);
     }
 
+    protected ModelZombieTest(float p_i1167_1_, float p_i1167_2_, int p_i1167_3_, int p_i1167_4_)
+    {
+        super(p_i1167_1_, p_i1167_2_, p_i1167_3_, p_i1167_4_);
+    }
+
     public ModelZombieTest(float p_i1168_1_, boolean p_i1168_2_)
     {
-        super();
+        super(p_i1168_1_, 0.0F, 64, p_i1168_2_ ? 32 : 64);
         controller = new Controller(this);
     }
 
@@ -76,22 +81,22 @@ public class ModelZombieTest extends ModelZombie {
                     entity,
                     this.bipedBody,
                     new Keyframe(
-                            new Vec3d(0, 4.0, 8.0),
-                            new Vec3d(Math.PI / -4.0D, 0, 0),
+                            Vec3.createVectorHelper(0, 4.0, 8.0),
+                            Vec3.createVectorHelper(Math.PI / -4.0D, 0, 0),
                             0,
                             8,
                             EnumTweenType.quadInOut
                     ),
                     new Keyframe(
-                            new Vec3d(0, 8.0, -11.0),
-                            new Vec3d(Math.PI / 2.5D, 0, 0),
+                            Vec3.createVectorHelper(0, 8.0, -11.0),
+                            Vec3.createVectorHelper(Math.PI / 2.5D, 0, 0),
                             8,
                             8,
                             EnumTweenType.quadOut
                     ),
                     new Keyframe(
-                            new Vec3d(0, 0, 0),
-                            new Vec3d(0, 0, 0),
+                            Vec3.createVectorHelper(0, 0, 0),
+                            Vec3.createVectorHelper(0, 0, 0),
                             16,
                             8,
                             EnumTweenType.quadIn
@@ -101,22 +106,22 @@ public class ModelZombieTest extends ModelZombie {
                     entity,
                     this.bipedLeftArm,
                     new Keyframe(
-                            new Vec3d(0, 0, 0),
-                            new Vec3d(-Math.PI, 0, 0),
+                            Vec3.createVectorHelper(0, 0, 0),
+                            Vec3.createVectorHelper(-Math.PI, 0, 0),
                             1,
                             8,
                             EnumTweenType.quadInOut
                     ),
                     new Keyframe(
-                            new Vec3d(0, 0, 0),
-                            new Vec3d(Math.PI / 3.0D, 0, 0),
+                            Vec3.createVectorHelper(0, 0, 0),
+                            Vec3.createVectorHelper(Math.PI / 3.0D, 0, 0),
                             9,
                             8,
                             EnumTweenType.quadOut
                     ),
                     new Keyframe(
-                            new Vec3d(0, 0, 0),
-                            new Vec3d(0, 0, 0),
+                            Vec3.createVectorHelper(0, 0, 0),
+                            Vec3.createVectorHelper(0, 0, 0),
                             17,
                             8,
                             EnumTweenType.quadIn
@@ -126,22 +131,22 @@ public class ModelZombieTest extends ModelZombie {
                     entity,
                     this.bipedRightArm,
                     new Keyframe(
-                            new Vec3d(0, 0, 0),
-                            new Vec3d(-Math.PI, 0, 0),
+                            Vec3.createVectorHelper(0, 0, 0),
+                            Vec3.createVectorHelper(-Math.PI, 0, 0),
                             1,
                             8,
                             EnumTweenType.quadInOut
                     ),
                     new Keyframe(
-                            new Vec3d(0, 0, 0),
-                            new Vec3d(Math.PI / 3.0D, 0, 0),
+                            Vec3.createVectorHelper(0, 0, 0),
+                            Vec3.createVectorHelper(Math.PI / 3.0D, 0, 0),
                             9,
                             8,
                             EnumTweenType.quadOut
                     ),
                     new Keyframe(
-                            new Vec3d(0, 0, 0),
-                            new Vec3d(0, 0, 0),
+                            Vec3.createVectorHelper(0, 0, 0),
+                            Vec3.createVectorHelper(0, 0, 0),
                             17,
                             8,
                             EnumTweenType.quadIn
@@ -151,22 +156,22 @@ public class ModelZombieTest extends ModelZombie {
                     entity,
                     this.bipedHead,
                     new Keyframe(
-                            new Vec3d(0, 0, 0),
-                            new Vec3d(-Math.PI / 4.0D, 0, 0),
+                            Vec3.createVectorHelper(0, 0, 0),
+                            Vec3.createVectorHelper(-Math.PI / 4.0D, 0, 0),
                             1,
                             8,
                             EnumTweenType.quadInOut
                     ),
                     new Keyframe(
-                            new Vec3d(0, 0, 0),
-                            new Vec3d(Math.PI / 4.0D, 0, 0),
+                            Vec3.createVectorHelper(0, 0, 0),
+                            Vec3.createVectorHelper(Math.PI / 4.0D, 0, 0),
                             9,
                             8,
                             EnumTweenType.quadOut
                     ),
                     new Keyframe(
-                            new Vec3d(0, 0, 0),
-                            new Vec3d(0, 0, 0),
+                            Vec3.createVectorHelper(0, 0, 0),
+                            Vec3.createVectorHelper(0, 0, 0),
                             17,
                             8,
                             EnumTweenType.quadIn
