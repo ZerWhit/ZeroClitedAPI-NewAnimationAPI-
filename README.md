@@ -1,3 +1,3 @@
 # ZeroClitedAPI-NewAnimationAPI-
-The new animation api in MC 1.7.10 Forge
+The new animation api in MC 1.12.2 Forge
 Credits thehippomaster
