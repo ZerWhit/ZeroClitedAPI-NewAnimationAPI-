@@ -4,38 +4,54 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import zerwhit.Example.ZeroClitedExample;
 import zerwhit.ZeroClitedAPI.Animate;
 import zerwhit.ZeroClitedAPI.IZeroLib;
 
 public class EntityZombieTest extends EntityZombie implements IZeroLib {
+    private static final DataParameter<Integer> ANIMATION_ID = EntityDataManager.<Integer>createKey(EntityZombieTest.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> ANIMATION_TICK = EntityDataManager.<Integer>createKey(EntityZombieTest.class, DataSerializers.VARINT);
     public EntityZombieTest(World p_i1602_1_) {
         super(p_i1602_1_);
-        this.func_110163_bv();
+        this.isImmuneToFire = true;
     }
 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(200.0D);
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200.0D);
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
-        dataWatcher.addObject(18, 0);
-        dataWatcher.addObject(19, 0);
+        dataManager.register(ANIMATION_ID, Integer.valueOf(0));
+        dataManager.register(ANIMATION_TICK, Integer.valueOf(0));
     }
 
     @Override
     public void onUpdate() {
         super.onUpdate();
         if(catchPacketID() != 0) sendPacketTick(catchPacketTick() + 1);
-        if (catchPacketID() == 1 && catchPacketTick() >= 30) {
-            sendPacketID(0);
-            sendPacketTick(0);
+        if (catchPacketID() == 1) {
+            if (catchPacketTick() >= 30){
+                sendPacketID(0);
+                sendPacketTick(0);
+            }
+            if (catchPacketTick() == 10) {
+                float f = (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+                Entity target = getAttackTarget();
+                if (target != null) {
+                    target.attackEntityFrom(DamageSource.causeMobDamage(this), f);
+                }
+            }
         }
-        //ZeroClitedExample.logger.info("The animate entity info, id:" + catchPacketID() + ", tick: " + catchPacketTick());
+        ZeroClitedExample.logger.info("The animate entity info, id:" + catchPacketID() + ", tick: " + catchPacketTick());
     }
 
     @Override
@@ -44,9 +60,8 @@ public class EntityZombieTest extends EntityZombie implements IZeroLib {
             Animate.sendPacket(this, 1);
             sendPacketTick(0);
         }
-        if (catchPacketID() == 1 && catchPacketTick() == 10)
-            return super.attackEntityAsMob(p_70652_1_);
-        return true;
+
+        return false;
     }
 
     @Override
@@ -65,22 +80,22 @@ public class EntityZombieTest extends EntityZombie implements IZeroLib {
 
     @Override
     public void sendPacketID(int id) {
-        dataWatcher.updateObject(18, id);
+        dataManager.set(ANIMATION_ID, id);
     }
 
     @Override
     public int catchPacketID() {
-        return dataWatcher.getWatchableObjectInt(18);
+        return dataManager.get(ANIMATION_ID);
     }
 
     @Override
     public void sendPacketTick(int tick) {
-        dataWatcher.updateObject(19, tick);
+        dataManager.set(ANIMATION_TICK, tick);
     }
 
     @Override
     public int catchPacketTick() {
-        return dataWatcher.getWatchableObjectInt(19);
+        return dataManager.get(ANIMATION_TICK);
     }
 
     @Override
